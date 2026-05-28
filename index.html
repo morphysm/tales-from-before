@@ -278,11 +278,24 @@ storyImageEl.addEventListener('mouseleave', () => {
 
 /* ── swipe support ───────────────────────────────── */
 let touchStartX = 0;
-document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+let touchStartY = 0;
+let touchIsMulti = false;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchIsMulti = e.touches.length > 1;
+}, {passive:true});
+document.addEventListener('touchmove', e => {
+  if(e.touches.length > 1) touchIsMulti = true;
+}, {passive:true});
 document.addEventListener('touchend', e => {
+  if(touchIsMulti) return;
   if(document.getElementById('lightbox').classList.contains('active')) return;
   const dx = e.changedTouches[0].clientX - touchStartX;
-  if(Math.abs(dx) > 50) { dx < 0 ? nextStory() : prevStory(); }
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if(Math.abs(dx) > 75 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    dx < 0 ? nextStory() : prevStory();
+  }
 }, {passive:true});
 
 /* ── progress bar ────────────────────────────────── */
