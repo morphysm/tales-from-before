@@ -237,6 +237,7 @@ const STORIES = [
 
 let current = 0;
 let renderTimers = [];
+let burstInterval = null;
 
 /* ── zoom / lightbox ─────────────────────────────── */
 function openZoom(src) {
@@ -326,6 +327,8 @@ function activateOrb() {
   const mc  = document.getElementById('mistContainer');
   const hint = document.getElementById('hint');
 
+  clearInterval(burstInterval);
+
   mc.style.opacity = '1';
   orb.style.animation = 'orbPulse 1.5s ease-out';
   hint.style.color = '#00ff4144';
@@ -333,11 +336,12 @@ function activateOrb() {
   spawnOverlayWisps();
 
   let count = 0;
-  const burst = setInterval(() => {
+  burstInterval = setInterval(() => {
     spawnMistParticle();
     count++;
     if(count > 18) {
-      clearInterval(burst);
+      clearInterval(burstInterval);
+      burstInterval = null;
       setTimeout(() => {
         mc.style.opacity = '0';
         orb.style.animation = '';
@@ -384,7 +388,8 @@ function renderStory(idx) {
   }
   img.className = '';
   img.src = s.img;
-  img.onload = () => img.classList.add('loaded');
+  img.onload  = () => img.classList.add('loaded');
+  img.onerror = () => img.classList.add('loaded');
 
   const mid = Math.ceil(s.lines.length / 2);
   s.lines.slice(0, mid).forEach((l, i) => {
@@ -426,11 +431,19 @@ function renderStory(idx) {
 
 function nextStory() {
   current = (current + 1) % STORIES.length;
-  activateOrb();
+  if(document.getElementById('storyPanel').classList.contains('visible')) {
+    renderStory(current);
+  } else {
+    activateOrb();
+  }
 }
 
 function prevStory() {
   current = (current - 1 + STORIES.length) % STORIES.length;
-  activateOrb();
+  if(document.getElementById('storyPanel').classList.contains('visible')) {
+    renderStory(current);
+  } else {
+    activateOrb();
+  }
 }
 </script>
