@@ -132,11 +132,11 @@ const STORIES = [
     lines:[
       "— Father. The fire is here. Where is the lamb for the sacrifice?",
       "— God will provide the lamb, my son.",
-      "— Stop.",
-      "— The seed is planted. He will remember this day forever.",
+      "<em>— Stop.</em>",
+      "<em>— The seed is planted. He will remember this day forever.</em>",
       "— Is this the price my Lord requires as proof of faith?",
-      "— Abraham —",
-      "— We kill fathers and sons. And the father who made the universe will one day give his own son to be slaughtered. Just like this.",
+      "<em>— Abraham —</em>",
+      "<em>— We kill fathers and sons. And the father who made the universe will one day give his own son to be slaughtered. Just like this.</em>",
       "— Abraham. Walk down.",
       "— Father.",
       "— Yes.",
@@ -390,7 +390,7 @@ function renderStory(idx) {
   s.lines.slice(0, mid).forEach((l, i) => {
     const d = document.createElement('div');
     d.className = 'd-line';
-    d.textContent = l;
+    d.innerHTML = l;
     dleft.appendChild(d);
     renderTimers.push(setTimeout(() => d.classList.add('show'), 200 + i * 120));
   });
@@ -398,7 +398,7 @@ function renderStory(idx) {
   s.lines.slice(mid).forEach((l, i) => {
     const d = document.createElement('div');
     d.className = 'd-line';
-    d.textContent = l;
+    d.innerHTML = l;
     dright.appendChild(d);
     renderTimers.push(setTimeout(() => d.classList.add('show'), 200 + (mid + i) * 120));
   });
