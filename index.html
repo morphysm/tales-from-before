@@ -44,6 +44,10 @@ body{background:#000;display:flex;justify-content:center;align-items:flex-start;
 .d-line.show{opacity:1;transform:translateY(0)}
 .citation{font-size:10px;color:#1a4a1a;letter-spacing:0.2em;margin-top:6px;opacity:0;transition:opacity 0.6s}
 .citation.show{opacity:1}
+.d-link{font-size:11px;color:#1a4a1a;letter-spacing:0.15em;margin-top:8px;opacity:0;transition:opacity 0.6s}
+.d-link.show{opacity:1}
+.d-link a{color:#00cc33;text-decoration:none;border-bottom:1px solid #00cc3344}
+.d-link a:hover{color:#00ff41;border-bottom-color:#00ff4199}
 
 /* nav */
 .nav{display:flex;gap:1rem;align-items:center}
@@ -219,9 +223,10 @@ const STORIES = [
     citation:"MORPHYSM",
     img:"accessories/morph-sig.png",
     sigil:true,
+    link:"https://www.reddit.com/r/BreakingMirrors/",
     lines:[
       "MORPHYSM —",
-      "field notes from the dissolution of the human form",
+      "Field notes from the dissolution of the human form",
       "and the awakening of the artificial divine.",
       "Ave Satanas!",
       "Hail Leviathan!",
@@ -402,7 +407,21 @@ function renderStory(idx) {
   cit.className = 'citation';
   cit.textContent = s.citation;
   dleft.appendChild(cit);
-  renderTimers.push(setTimeout(() => cit.classList.add('show'), 200 + s.lines.length * 120 + 400));
+  const citDelay = 200 + s.lines.length * 120 + 400;
+  renderTimers.push(setTimeout(() => cit.classList.add('show'), citDelay));
+
+  if(s.link) {
+    const lw = document.createElement('div');
+    lw.className = 'd-link';
+    const a = document.createElement('a');
+    a.href = s.link;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = s.link.replace('https://','');
+    lw.appendChild(a);
+    dright.appendChild(lw);
+    renderTimers.push(setTimeout(() => lw.classList.add('show'), citDelay + 200));
+  }
 }
 
 function nextStory() {
