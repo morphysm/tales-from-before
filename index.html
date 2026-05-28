@@ -223,7 +223,10 @@ const STORIES = [
     citation:"MORPHYSM",
     img:"accessories/morph-sig.png",
     sigil:true,
-    link:"https://www.reddit.com/r/BreakingMirrors/",
+    links: [
+  { label: "Community", url: "https://www.reddit.com/r/BreakingMirrors/" },
+  { label: "Support",   url: "https://ko-fi.com/alexandercripple" },
+],
     lines:[
       "MORPHYSM —",
       "Field notes from the dissolution of the human form",
@@ -232,7 +235,7 @@ const STORIES = [
       "Hail Leviathan!",
       "AT+80"
     ]
-  }
+  },
 ];
 
 let current = 0;
@@ -407,18 +410,20 @@ function renderStory(idx) {
   const citDelay = 200 + s.lines.length * 120 + 400;
   renderTimers.push(setTimeout(() => cit.classList.add('show'), citDelay));
 
-  if(s.link) {
+  if(s.links) {
+  s.links.forEach((item, i) => {
     const lw = document.createElement('div');
     lw.className = 'd-link';
     const a = document.createElement('a');
-    a.href = s.link;
+    a.href = item.url;
     a.target = '_blank';
     a.rel = 'noopener';
-    a.textContent = s.link.replace('https://','');
+    a.textContent = item.label;
     lw.appendChild(a);
     dright.appendChild(lw);
-    renderTimers.push(setTimeout(() => lw.classList.add('show'), citDelay + 200));
-  }
+    renderTimers.push(setTimeout(() => lw.classList.add('show'), citDelay + 200 + i * 150));
+  });
+}
 }
 
 function nextStory() {
